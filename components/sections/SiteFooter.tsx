@@ -1,40 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowUp, Check, Copy } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import { ElysiumCoin } from "@/components/cinematic/ElysiumCoin";
 import { siteConfig } from "@/lib/site-config";
-
-function ContractAddress({ address }: { address: string }) {
-  const [state, setState] = useState<"idle" | "copied" | "failed">("idle");
-
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(address);
-      setState("copied");
-    } catch {
-      setState("failed");
-    }
-    window.setTimeout(() => setState("idle"), 2400);
-  }
-
-  return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-      <code className="break-all font-sans text-[0.9375rem] tabular-nums text-ivory">{address}</code>
-      <button
-        type="button"
-        onClick={copy}
-        className="inline-flex items-center gap-2 font-sans text-[0.6875rem] font-semibold tracking-[0.28em] text-gold uppercase hover:text-ivory"
-      >
-        {state === "copied" ? <Check className="size-4" aria-hidden /> : <Copy className="size-4" aria-hidden strokeWidth={1.5} />}
-        {state === "copied" ? "Copied" : state === "failed" ? "Copy failed. Select the address instead" : "Copy address"}
-      </button>
-      <span className="sr-only" aria-live="polite">
-        {state === "copied" ? "Contract address copied" : ""}
-      </span>
-    </div>
-  );
-}
 
 function Row({ term, children }: { term: string; children: React.ReactNode }) {
   return (
@@ -48,7 +16,7 @@ function Row({ term, children }: { term: string; children: React.ReactNode }) {
 }
 
 export function SiteFooter() {
-  const { socials, contractAddress, tradingLinks, ticker, name } = siteConfig;
+  const { ticker, name } = siteConfig;
 
   function backToHorizon() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -79,55 +47,12 @@ export function SiteFooter() {
             The reverse
           </h2>
           <p className="mt-5 max-w-[46ch] font-story text-[1.1875rem] leading-relaxed text-ivory/85 text-pretty">
-            Every coin has two faces. This side carries what is real: only the links listed
-            here belong to {name}.
+            Every coin has two faces. This side carries what is real.
           </p>
 
           <dl className="mt-12 border-b border-ivory/12">
             <Row term="Ticker">
               <span className="font-display tracking-[0.24em] text-ivory">{ticker}</span>
-            </Row>
-            <Row term="Contract">
-              {contractAddress ? (
-                <ContractAddress address={contractAddress} />
-              ) : (
-                <>
-                  Not deployed yet. The verified address will be published here, and only here.
-                  Treat any address you cannot find on this page as false.
-                </>
-              )}
-            </Row>
-            <Row term="Socials">
-              <ul className="flex flex-wrap gap-x-8 gap-y-2">
-                {socials.map((s) => (
-                  <li key={s.label}>
-                    {s.href ? (
-                      <a href={s.href} rel="noopener noreferrer" target="_blank" className="text-ivory underline decoration-gold/60 hover:text-gold">
-                        {s.label}
-                      </a>
-                    ) : (
-                      <span className="text-ivory/60">
-                        {s.label} <span className="text-ivory/45">· to be announced</span>
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </Row>
-            <Row term="Trading">
-              {tradingLinks.length ? (
-                <ul className="flex flex-wrap gap-x-8 gap-y-2">
-                  {tradingLinks.map((t) => (
-                    <li key={t.href}>
-                      <a href={t.href} rel="noopener noreferrer" target="_blank" className="underline decoration-gold/60 hover:text-gold">
-                        {t.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                "No trading links yet. None will be shared anywhere before they appear here."
-              )}
             </Row>
           </dl>
 

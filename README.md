@@ -14,13 +14,10 @@ npm run build && npm start
 
 ## Project facts
 
-All project facts live in `lib/site-config.ts`. Every unverified value is `null` (or an
-empty list), which renders an explicit placeholder in the footer. Fill them in only once they are
-verified:
-
-- `socials[].href` sets the X and Telegram URLs.
-- `contractAddress` and `chain` show the address with a copy button.
-- `tradingLinks` adds buttons in the footer.
+All project facts live in `lib/site-config.ts`. The footer currently shows only the ticker and
+the disclaimer; the contract, socials and trading rows were removed. `socials`, `contractAddress`,
+`chain` and `tradingLinks` stay in the config, unverified (`null` or empty), for when those rows
+come back.
 
 Never add supply, liquidity, market cap, holder counts, listings, audits, partnerships or
 return language.
