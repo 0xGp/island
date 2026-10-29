@@ -1,0 +1,4 @@
+{
+  "prompt": "Isolated cut-out element for compositing, 16:9. A single towering ocean wave crest seen from the side, painted in the exact style and palette of the reference image (great-wave.jpg) ... Everything ABOVE the wave silhouette is a perfectly flat, uniform, solid pure magenta background (#FF00FF) ... No text.\n\n[Prompt abridged: the elided passages were not retained.]\nPost-processing: keyed off the magenta backdrop with alpha unmixing and magenta/red despill in .impeccable/cutouts.mjs (waveCrest), exported as WebP with alpha.\n",
+  "createdAt": "2026-10-29T17:00:15.042Z"
+}

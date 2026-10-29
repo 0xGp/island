@@ -1,0 +1,4 @@
+{
+  "prompt": "Not separately generated. Cut out of the AI-generated island-isometric.jpg (and island-isometric-portrait.jpg for the portrait cut) by .impeccable/cutouts.mjs: open sea classified by colour, cleaned with blur/threshold morphology, flood-filled from the frame edge so only edge-connected sea is removed, then feathered into the alpha channel.\n",
+  "createdAt": "2026-10-29T17:00:15.158Z"
+}

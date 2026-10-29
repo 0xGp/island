@@ -1,0 +1,4 @@
+Edit of the reference image (island-isometric-portrait.jpg), same 9:16 frame: remove the island ... Only the open deep Aegean sea remains ...
+
+[Prompt abridged: the elided passages were not retained.]
+Post-processing: resized to 720x1280 in .impeccable/cutouts.mjs.

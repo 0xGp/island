@@ -1,26 +1,326 @@
 @import "tailwindcss";
 
+@theme {
+  --color-midnight: #071a2b;
+  --color-midnight-deep: #04101c;
+  --color-aegean: #123b54;
+  --color-turquoise: #48c8c0;
+  --color-ivory: #f4ebdd;
+  --color-gold: #d9b77a;
+  --color-gold-deep: #9c7a43;
+  --color-lavender: #b7b6d6;
+
+  --font-display: var(--font-marcellus), "Times New Roman", serif;
+  --font-story: var(--font-spectral), Georgia, serif;
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-tide: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  --nav-h: 4.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-midnight);
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: color-mix(in oklab, var(--color-gold) 55%, transparent)
+    var(--color-midnight-deep);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-midnight);
+  color: var(--color-ivory);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-gold) 80%, transparent);
+  color: var(--color-midnight);
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--color-gold);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+a {
+  text-underline-offset: 0.3em;
+  text-decoration-thickness: 1px;
+}
+
+/* ------------------------------------------------------------------
+   Plates: painted artwork placed in a box that keeps the painting's
+   aspect ratio and covers its container, so anything positioned in %
+   inside the box stays pinned to the same spot in the painting.
+   The container must declare `container-type: size`.
+------------------------------------------------------------------- */
+
+.plate-frame {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+}
+
+.plate {
+  --arw: 16;
+  --arh: 9;
+  --fx: 0.5;
+  --fy: 0.5;
+  --w: max(100cqw, 100cqh * var(--arw) / var(--arh));
+  --h: calc(var(--w) * var(--arh) / var(--arw));
+  position: absolute;
+  width: var(--w);
+  height: var(--h);
+  left: clamp(100cqw - var(--w), 50cqw - var(--fx) * var(--w), 0px);
+  top: clamp(100cqh - var(--h), 50cqh - var(--fy) * var(--h), 0px);
+}
+
+.plate picture,
+.plate > img,
+.plate picture img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+}
+
+.pin {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+}
+
+@media (max-aspect-ratio: 4/5) {
+  .plate[data-tall] {
+    --arw: 9;
+    --arh: 16;
+  }
+
+  .plate[data-tall] .pin {
+    left: var(--xt, var(--x));
+    top: var(--yt, var(--y));
+  }
+
+  .plate[data-tall] [data-tall-anchor="hidden"] {
+    display: none;
+  }
+
+  .plate[data-tall] [data-tall-anchor="start"] {
+    --tw-translate-x: -0.3125rem;
+  }
+
+  .plate[data-tall] [data-tall-anchor="end"] {
+    --tw-translate-x: calc(-100% + 0.3125rem);
+  }
+
+  .plate[data-tall] [data-tall-anchor="start"] .feature-stack {
+    align-items: flex-start;
+  }
+
+  .plate[data-tall] [data-tall-anchor="end"] .feature-stack {
+    align-items: flex-end;
+  }
+
+  .plate[data-portrait-fx] {
+    --fx: var(--pfx);
+  }
+
+  /* A wide painting shown whole on a tall screen, floating in its own sky. */
+  .plate[data-float-portrait] {
+    --w: 178cqw;
+    top: calc(50cqh - var(--h) * 0.56);
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      #000 14%,
+      #000 86%,
+      transparent
+    );
+  }
+}
+
+/* The coin sits exactly over the painted sun: --cd is the sun's diameter as
+   a fraction of the painting's width; the coin face is 0.686 of its SVG box. */
+.coin-size {
+  --cd: 0.096;
+  width: calc(var(--w) * var(--cd) / 0.686);
+  max-width: none;
+}
+
+/* The painted roofline, traced in the coin box's own coordinates: the coin
+   is clipped below it so it stays behind the temple while it covers the
+   painted sun. .coin-risen is the struck pose for the still frames. */
+.roofline {
+  clip-path: polygon(-100% -100%, 200% -100%, 200% 90%, 90% 87%, 65% 81%, 15% 91%, -100% 93%);
+}
+.coin-risen {
+  transform-origin: 50% 84%;
+  scale: 1.3;
+  translate: 0 8%;
+}
+
+@media (max-aspect-ratio: 4/5) {
+  .plate[data-tall] .coin-size {
+    --cd: 0.244;
+  }
+  .plate[data-tall] .roofline {
+    clip-path: polygon(
+      -100% -100%, 200% -100%, 200% 83%, 115% 82%, 85% 77.5%, 64% 75%,
+      32% 68.5%, 5% 79%, -100% 80%
+    );
+  }
+  .plate[data-tall] .coin-risen {
+    scale: 1.12;
+    translate: 0 -2%;
+  }
+}
+
+/* Opening title: struck into view glyph by glyph, independent of hydration. */
+.title-glyph {
+  opacity: 0;
+  translate: 0 0.3em;
+  filter: blur(8px);
+  animation: glyph-rise 1.8s var(--ease-tide) forwards;
+  animation-delay: calc(500ms + var(--i) * 55ms);
+}
+
+.title-sub {
+  opacity: 0;
+  animation: fade-up 1.6s var(--ease-tide) 1.9s forwards;
+}
+
+@keyframes glyph-rise {
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    translate: 0 0.6em;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes tide-line {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+.tide-line {
+  animation: tide-line 2.6s var(--ease-tide) infinite;
+}
+
+/* Shadow over the island with a sunlit hole at --lx / --ly, radius --lr. */
+.sun-shade {
+  --lx: 50%;
+  --ly: 20%;
+  --lr: 0%;
+  mask-image: radial-gradient(
+    circle at var(--lx) var(--ly),
+    transparent var(--lr),
+    #000 calc(var(--lr) + 22%)
+  );
+}
+
+.screen-layer {
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Great-wave crest: sized from the viewport height so its peak can rise over
+   the horizon island at any aspect; the timeline places it in pixels. */
+.wave-crest {
+  --cw: max(130vw, 215svh);
+  width: var(--cw);
+  max-width: none;
+  aspect-ratio: 16 / 9;
+  mask-image: linear-gradient(to right, transparent, #000 16%, #000 90%, transparent);
+}
+
+/* Still frame of the same moment: crest peak (37% across, 5.7% down its
+   box) over the horizon island, its top at 28% of the frame. */
+.story-crest {
+  left: calc(58.6vw - 0.37 * var(--cw));
+  bottom: calc(72svh - 0.943 * var(--cw) * 9 / 16);
+}
+
+@media (max-aspect-ratio: 4/5) {
+  .story-crest {
+    left: calc(61vw - 0.37 * var(--cw));
+    bottom: calc(70svh - 0.943 * var(--cw) * 9 / 16);
+  }
+}
+
+.foam-feather {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 18%,
+    #000 64%,
+    transparent
+  );
+}
+
+/* Rendering mode: cinematic by default, calm storybook for reduced motion. */
+.storybook {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cinema {
+    display: none;
+  }
+  .storybook {
+    display: block;
+  }
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.prose-measure {
+  max-width: 34ch;
+  text-wrap: pretty;
+}
+
+.label-shadow {
+  text-shadow:
+    0 1px 2px rgb(4 16 28 / 0.9),
+    0 0 14px rgb(4 16 28 / 0.85),
+    0 0 28px rgb(4 16 28 / 0.6);
+}
+
+.sea-shadow {
+  text-shadow:
+    0 1px 2px rgb(4 16 28 / 0.55),
+    0 4px 24px rgb(4 16 28 / 0.45);
 }
