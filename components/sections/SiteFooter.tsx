@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUp } from "lucide-react";
 import { ElysiumCoin } from "@/components/cinematic/ElysiumCoin";
 import { siteConfig } from "@/lib/site-config";
@@ -74,6 +75,19 @@ export function SiteFooter() {
                 </Row>
               ))}
             </dl>
+            <figure className="mt-10 max-w-[26rem]">
+              <Image
+                src="/images/myth/elysium-summary.webp"
+                width={1024}
+                height={934}
+                sizes="(min-width: 1024px) 26rem, 90vw"
+                alt="Elysium summary table. The Realm of Elysium. Qualities: Paradise of the Blessed Dead. Location: River Oceanus or Hades. Other names: Islands of the Blessed, the White Island."
+                className="h-auto w-full border border-ivory/12"
+              />
+              <figcaption className="mt-3 font-sans text-[0.75rem] tracking-[0.12em] text-ivory/60">
+                Elysium at a glance: its qualities, location and other names.
+              </figcaption>
+            </figure>
             <figure className="mt-10 border-l border-gold/60 pl-6">
               <blockquote className="max-w-[52ch] font-story text-[1.1875rem] leading-relaxed text-ivory/90 italic text-pretty">
                 “{elysiumMyth.quote.text}”
