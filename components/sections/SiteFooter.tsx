@@ -3,6 +3,7 @@
 import { ArrowUp } from "lucide-react";
 import { ElysiumCoin } from "@/components/cinematic/ElysiumCoin";
 import { siteConfig } from "@/lib/site-config";
+import { elysiumMyth } from "@/lib/story";
 
 function Row({ term, children }: { term: string; children: React.ReactNode }) {
   return (
@@ -56,7 +57,45 @@ export function SiteFooter() {
             </Row>
           </dl>
 
-          <p className="mt-8 max-w-[60ch] font-sans text-[0.8125rem] leading-relaxed text-ivory/60">
+          <section aria-labelledby="myth-title" className="mt-16">
+            <h3
+              id="myth-title"
+              className="font-display text-[clamp(1.5rem,2.4vw,2rem)] leading-[1.1] tracking-[0.04em] text-ivory uppercase"
+            >
+              The myth
+            </h3>
+            <p className="mt-4 max-w-[52ch] font-story text-[1.0625rem] leading-relaxed text-ivory/85 text-pretty">
+              The island is not our invention. The ancient Greeks wrote of it as Elysium.
+            </p>
+            <dl className="mt-8 border-b border-ivory/12">
+              {elysiumMyth.facts.map((f) => (
+                <Row key={f.term} term={f.term}>
+                  {f.value}
+                </Row>
+              ))}
+            </dl>
+            <figure className="mt-10 border-l border-gold/60 pl-6">
+              <blockquote className="max-w-[52ch] font-story text-[1.1875rem] leading-relaxed text-ivory/90 italic text-pretty">
+                “{elysiumMyth.quote.text}”
+              </blockquote>
+              <figcaption className="mt-3 font-sans text-[0.75rem] tracking-[0.12em] text-ivory/60">
+                {elysiumMyth.quote.cite}
+              </figcaption>
+            </figure>
+            <p className="mt-8 font-sans text-[0.8125rem] text-ivory/70">
+              Source:{" "}
+              <a
+                href={elysiumMyth.source.href}
+                rel="noopener noreferrer"
+                target="_blank"
+                className="text-ivory underline decoration-gold/60 underline-offset-[0.3em] hover:text-gold"
+              >
+                {elysiumMyth.source.label}
+              </a>
+            </p>
+          </section>
+
+          <p className="mt-12 max-w-[60ch] font-sans text-[0.8125rem] leading-relaxed text-ivory/60">
             {ticker} is a meme coin inspired by myth. It carries no promise of value, utility or return.
           </p>
 

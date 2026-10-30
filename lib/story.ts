@@ -77,3 +77,17 @@ export const sunInTemple = {
   wide: { x: "50.2%", y: "11.6%", d: "9.6%" },
   tall: { x: "50.3%", y: "29.9%", d: "24.4%" },
 };
+
+/** The myth behind the name, as recorded by the cited source. Quote it, never embellish it. */
+export const elysiumMyth = {
+  facts: [
+    { term: "Qualities", value: "Paradise of the blessed dead: the final resting place of heroes and the virtuous." },
+    { term: "Location", value: "The far western stream of the river Okeanos (Oceanus), or the fields of Haides beyond the river Lethe." },
+    { term: "Other names", value: "Islands of the Blessed (Nêsoi Makarôn), the White Island (Nêsos Leukê), the Elysian Fields." },
+  ],
+  quote: {
+    text: "And they live untouched by sorrow in the Islands of the Blessed along the shore of deep swirling Okeanos, happy heroes…",
+    cite: "Hesiod, Works and Days 156 ff., trans. Evelyn-White",
+  },
+  source: { label: "Theoi Project · Elysium", href: "https://www.theoi.com/Kosmos/Elysion.html" },
+};
